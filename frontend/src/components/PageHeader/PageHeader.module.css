@@ -1,0 +1,54 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  align-items: flex-start;
+  color: var(--color-ink-muted);
+  display: inline-flex;
+  flex-direction: column;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  gap: 6px;
+  letter-spacing: var(--tracking-wide);
+  margin: 0 0 var(--space-1);
+  text-transform: uppercase;
+}
+
+.eyebrowLine {
+  background: linear-gradient(90deg, var(--color-accent), var(--color-high));
+  height: 2px;
+  transform-origin: left;
+  width: 32px;
+}
+
+.title {
+  color: var(--color-ink);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--font-display);
+  font-size: var(--font-size-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin: 0;
+  perspective: 800px;
+}
+
+.word {
+  display: inline-block;
+  transform-style: preserve-3d;
+  white-space: pre;
+}
+
+.description {
+  color: var(--color-ink-secondary);
+  font-size: var(--font-size-base);
+  margin: var(--space-1) 0 0;
+  max-width: 640px;
+}

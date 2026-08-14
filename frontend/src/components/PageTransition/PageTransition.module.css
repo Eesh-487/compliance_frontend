@@ -1,0 +1,16 @@
+.frame {
+  margin: 0 auto;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.sweep {
+  background: linear-gradient(90deg, var(--color-accent), var(--color-high));
+  height: 3px;
+  left: 0;
+  position: fixed;
+  top: 0;
+  transform-origin: left;
+  width: 100%;
+  z-index: 9998;
+}

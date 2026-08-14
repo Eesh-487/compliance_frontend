@@ -1,0 +1,97 @@
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.resolved {
+  opacity: 0.82;
+}
+
+.headerRow {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+}
+
+.badges {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.meta {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.rationale {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+.blockText {
+  border-radius: var(--radius-md);
+  margin: 0;
+  padding: var(--space-3);
+  white-space: pre-wrap;
+}
+
+.removeText {
+  border: 1px solid rgba(179, 38, 30, 0.14);
+  background-color: var(--color-diff-remove-bg);
+  color: var(--color-diff-remove-text);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.neutralText {
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.addText {
+  border: 1px solid rgba(47, 104, 68, 0.16);
+  background-color: var(--color-diff-add-bg);
+  color: var(--color-diff-add-text);
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .headerRow {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

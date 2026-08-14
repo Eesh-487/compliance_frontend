@@ -1,0 +1,156 @@
+@import './tokens.css';
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  padding: 0;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ambient drifting aurora, sits behind everything */
+.auroraLayer {
+  height: 100vh;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 0;
+}
+
+.auroraLayer::before,
+.auroraLayer::after {
+  border-radius: 50%;
+  content: '';
+  filter: blur(90px);
+  opacity: 0.55;
+  position: absolute;
+}
+
+.auroraLayer::before {
+  animation: drift-one 26s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(30, 42, 74, 0.22), transparent 68%);
+  height: 620px;
+  left: -8%;
+  top: -12%;
+  width: 620px;
+}
+
+.auroraLayer::after {
+  animation: drift-two 32s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(180, 83, 10, 0.14), transparent 70%);
+  height: 520px;
+  right: -10%;
+  top: 30%;
+  width: 520px;
+}
+
+@keyframes drift-one {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(6%, 10%) scale(1.12);
+  }
+}
+
+@keyframes drift-two {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-8%, -6%) scale(1.08);
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  margin: 0;
+}
+
+p {
+  margin-top: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  transition: background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(30, 42, 74, 0.35);
+  outline-offset: 2px;
+}
+
+/* Custom cursor: only once CustomCursor has mounted, and only on fine-pointer devices */
+@media (pointer: fine) {
+  body.cursor-ready,
+  body.cursor-ready a,
+  body.cursor-ready button,
+  body.cursor-ready [role='button'],
+  body.cursor-ready label {
+    cursor: none;
+  }
+
+  body.cursor-ready input,
+  body.cursor-ready textarea {
+    cursor: text;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

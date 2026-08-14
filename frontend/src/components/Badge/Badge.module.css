@@ -1,0 +1,55 @@
+.badge {
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  padding: 6px 10px;
+  text-transform: capitalize;
+}
+
+.defaultBadge {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.severityCritical {
+  background-color: var(--color-critical-bg);
+  color: var(--color-critical);
+}
+
+.severityHigh {
+  background-color: var(--color-high-bg);
+  color: var(--color-high);
+}
+
+.severityMedium {
+  background-color: var(--color-medium-bg);
+  color: var(--color-medium);
+}
+
+.severityLow {
+  background-color: var(--color-low-bg);
+  color: var(--color-low);
+}
+
+.statusPending {
+  background-color: var(--color-pending-bg);
+  color: var(--color-pending);
+}
+
+.statusAccepted {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.statusRejected {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.statusEdited {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+}

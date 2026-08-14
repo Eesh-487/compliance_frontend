@@ -1,0 +1,108 @@
+:root {
+  /* Canvas & surfaces */
+  --color-canvas: #fafaf8;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #f4f3ef;
+
+  /* Borders */
+  --color-border: #e5e3dd;
+  --color-border-strong: #d4d1c7;
+
+  /* Text */
+  --color-ink: #14161a;
+  --color-ink-secondary: #52525b;
+  --color-ink-muted: #8a8778;
+
+  /* Accent */
+  --color-accent: #1e2a4a;
+  --color-accent-hover: #2a3b63;
+  --color-accent-soft: #eef1f6;
+
+  /* Back-compat aliases used by a few older references */
+  --color-text-primary: var(--color-ink);
+  --color-text-secondary: var(--color-ink-secondary);
+  --color-text-muted: var(--color-ink-muted);
+  --color-bg: var(--color-canvas);
+
+  /* Severity */
+  --color-critical: #b3261e;
+  --color-critical-bg: #fbeae9;
+  --color-high: #b4530a;
+  --color-high-bg: #fbf0e4;
+  --color-medium: #92660c;
+  --color-medium-bg: #faf3e2;
+  --color-low: var(--color-accent);
+  --color-low-bg: var(--color-accent-soft);
+
+  /* Status */
+  --color-success: #2f6844;
+  --color-success-bg: #ebf3ed;
+  --color-danger: #b3261e;
+  --color-danger-bg: #fbeae9;
+  --color-pending: #92660c;
+  --color-pending-bg: #faf3e2;
+
+  /* Diff */
+  --color-diff-add-bg: #e7f0e9;
+  --color-diff-add-text: #2f6844;
+  --color-diff-remove-bg: #fbeae9;
+  --color-diff-remove-text: #b3261e;
+
+  /* Graph Explorer node types (validated categorical 8-hue set; see
+     GraphExplorerPage for the palette/legend contract) */
+  --color-node-policy: #2a78d6;
+  --color-node-regulation: #4a3aa7;
+  --color-node-article: #1baf7a;
+  --color-node-requirement: #eda100;
+  --color-node-control: #008300;
+  --color-node-department: #eb6834;
+  --color-node-risk: #e34948;
+  --color-node-process: #e87ba4;
+
+  /* Spacing (unchanged 4px scale) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* Type */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+
+  --font-size-xs: 0.8125rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 0.9375rem;
+  --font-size-lg: 1.0625rem;
+  --font-size-xl: 1.375rem;
+  --font-size-2xl: 1.875rem;
+  --font-size-display: 2.75rem;
+
+  --tracking-wide: 0.06em;
+
+  /* Radius & shadow */
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --shadow-xs: 0 1px 2px rgba(20, 22, 26, 0.04);
+  --shadow-sm: 0 2px 8px rgba(20, 22, 26, 0.06);
+  --shadow-md: 0 8px 24px rgba(20, 22, 26, 0.08);
+  --shadow-lg: 0 24px 60px rgba(20, 22, 26, 0.16);
+  --shadow-glow: 0 0 0 1px rgba(30, 42, 74, 0.06), 0 20px 40px -12px rgba(30, 42, 74, 0.35);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 650ms;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --font-size-display: 3.5rem;
+  }
+}

@@ -1,0 +1,67 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dropZone {
+  background: var(--color-surface-sunken);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  transition: border-color var(--duration-base) var(--ease-out);
+}
+
+.dropZone:hover {
+  border-color: var(--color-accent);
+}
+
+.dropTitle {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.dropSubtext {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.dropZone input {
+  width: 100%;
+}
+
+.fileName {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.loading {
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.error {
+  color: var(--color-danger);
+  font-weight: 600;
+  margin: 0;
+}
+
+.result {
+  background: var(--color-success-bg);
+  border: 1px solid rgba(47, 104, 68, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--color-success);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.result p {
+  margin: 0;
+}
