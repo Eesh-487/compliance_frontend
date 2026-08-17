@@ -64,14 +64,6 @@ export async function apiRequest(path, options = {}) {
     return data;
   } catch (error) {
     if (error.name === 'AbortError') {
-      if (stoppedByCaller) {
-        throw {
-          message: 'Stopped.',
-          status: 499,
-          aborted: true,
-        };
-      }
-
       throw {
         message: 'Request timed out. Please try again.',
         status: 408,
@@ -89,9 +81,6 @@ export async function apiRequest(path, options = {}) {
     );
   } finally {
     clearTimeout(timer);
-    if (externalSignal && onExternalAbort) {
-      externalSignal.removeEventListener('abort', onExternalAbort);
-    }
   }
 }
 
