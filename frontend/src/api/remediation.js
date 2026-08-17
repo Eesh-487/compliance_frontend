@@ -1,11 +1,9 @@
 import { apiRequest, LONG_REQUEST_MS } from './client';
 
-export function draftRemediation({ signal } = {}) {
-  return apiRequest('/remediation/draft', {
-    method: 'POST',
-    timeoutMs: LONG_REQUEST_MS,
-    signal,
-  });
+// Kicks off a background job and returns { job_id } almost immediately -
+// see api/jobs.js for the poll-until-done pattern that consumes it.
+export function draftRemediation() {
+  return apiRequest('/remediation/draft', { method: 'POST' });
 }
 
 export function getSuggestions() {

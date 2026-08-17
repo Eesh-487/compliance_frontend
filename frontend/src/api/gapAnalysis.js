@@ -1,9 +1,7 @@
-import { apiRequest, LONG_REQUEST_MS } from './client';
+import { apiRequest } from './client';
 
-export function runGapAnalysis({ signal } = {}) {
-  return apiRequest('/gap-analysis/run', {
-    method: 'POST',
-    timeoutMs: LONG_REQUEST_MS,
-    signal,
-  });
+// Kicks off a background job and returns { job_id } almost immediately -
+// see api/jobs.js for the poll-until-done pattern that consumes it.
+export function runGapAnalysis() {
+  return apiRequest('/gap-analysis/run', { method: 'POST' });
 }

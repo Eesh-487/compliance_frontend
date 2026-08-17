@@ -24,27 +24,11 @@ export async function apiRequest(path, options = {}) {
     headers = {},
     timeoutMs,
     isFormData = false,
-    signal: externalSignal,
   } = options;
 
   const controller = new AbortController();
   const requestTimeout = timeoutMs ?? LONG_REQUEST_MS;
   const timer = setTimeout(() => controller.abort(), requestTimeout);
-
-  let stoppedByCaller = false;
-  let onExternalAbort;
-  if (externalSignal) {
-    if (externalSignal.aborted) {
-      stoppedByCaller = true;
-      controller.abort();
-    } else {
-      onExternalAbort = () => {
-        stoppedByCaller = true;
-        controller.abort();
-      };
-      externalSignal.addEventListener('abort', onExternalAbort);
-    }
-  }
 
   try {
     const fetchHeaders = { ...headers };

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { runGraphBuilder } from '../api/graphBuilder';
 import { runLawIngest } from '../api/lawIngest';
 import { draftRemediation } from '../api/remediation';
+import { cancelJob, runJobToCompletion } from '../api/jobs';
 
 const SUGGESTIONS_KEY = ['remediation-suggestions'];
 
@@ -23,18 +24,20 @@ export function useReviewOrchestration() {
   const [hasStarted, setHasStarted] = useState(false);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const controllerRef = useRef(null);
+  const activeJobIdRef = useRef(null);
 
   const setStepStatus = useCallback((key, status, error = null) => {
     setSteps((prev) => prev.map((step) => (step.key === key ? { ...step, status, error } : step)));
   }, []);
 
+  const trackJobId = useCallback((jobId) => {
+    activeJobIdRef.current = jobId;
+  }, []);
+
   const runGraphBuilderStep = useCallback(async () => {
     setStepStatus('graphBuilder', 'running');
-    const controller = new AbortController();
-    controllerRef.current = controller;
     try {
-      await runGraphBuilder({ signal: controller.signal });
+      await runJobToCompletion(runGraphBuilder, { onJobId: trackJobId });
       setStepStatus('graphBuilder', 'done');
       return true;
     } catch (error) {
@@ -44,15 +47,15 @@ export function useReviewOrchestration() {
         error?.aborted ? null : error?.message || 'Graph Builder failed.',
       );
       return false;
+    } finally {
+      activeJobIdRef.current = null;
     }
-  }, [setStepStatus]);
+  }, [setStepStatus, trackJobId]);
 
   const runLawIngestStep = useCallback(async () => {
     setStepStatus('lawIngest', 'running');
-    const controller = new AbortController();
-    controllerRef.current = controller;
     try {
-      await runLawIngest({ signal: controller.signal });
+      await runJobToCompletion(runLawIngest, { onJobId: trackJobId });
       setStepStatus('lawIngest', 'done');
       setStepStatus('humanUpload', 'active');
       return true;
@@ -63,15 +66,15 @@ export function useReviewOrchestration() {
         error?.aborted ? null : error?.message || 'Law Ingest failed.',
       );
       return false;
+    } finally {
+      activeJobIdRef.current = null;
     }
-  }, [setStepStatus]);
+  }, [setStepStatus, trackJobId]);
 
   const runDraftStep = useCallback(async () => {
     setStepStatus('draft', 'running');
-    const controller = new AbortController();
-    controllerRef.current = controller;
     try {
-      const result = await draftRemediation({ signal: controller.signal });
+      const result = await runJobToCompletion(draftRemediation, { onJobId: trackJobId });
       setStepStatus('draft', 'done');
       queryClient.setQueryData(SUGGESTIONS_KEY, result);
       navigate('/review/suggestions');
@@ -83,11 +86,15 @@ export function useReviewOrchestration() {
         error?.aborted ? null : error?.message || 'Draft Remediation failed.',
       );
       return false;
+    } finally {
+      activeJobIdRef.current = null;
     }
-  }, [setStepStatus, queryClient, navigate]);
+  }, [setStepStatus, trackJobId, queryClient, navigate]);
 
   const stop = useCallback(() => {
-    controllerRef.current?.abort();
+    if (activeJobIdRef.current) {
+      cancelJob(activeJobIdRef.current).catch(() => {});
+    }
   }, []);
 
   const start = useCallback(async () => {
