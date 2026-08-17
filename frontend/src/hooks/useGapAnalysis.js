@@ -1,4 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCancellableMutation } from './useCancellableMutation';
 import { runGapAnalysis } from '../api/gapAnalysis';
 
 const GAP_ANALYSIS_CACHE_KEY = ['gap-analysis-last-result'];
@@ -24,8 +25,7 @@ function writeStoredResult(data) {
 export function useGapAnalysis() {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: runGapAnalysis,
+  return useCancellableMutation(runGapAnalysis, {
     onSuccess: (data) => {
       queryClient.setQueryData(GAP_ANALYSIS_CACHE_KEY, data);
       writeStoredResult(data);

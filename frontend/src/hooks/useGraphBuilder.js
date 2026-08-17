@@ -1,8 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
+import { useCancellableMutation } from './useCancellableMutation';
 import { runGraphBuilder } from '../api/graphBuilder';
 
 export function useGraphBuilder() {
-  return useMutation({
-    mutationFn: runGraphBuilder,
-  });
+  return useCancellableMutation(runGraphBuilder);
 }

@@ -24,11 +24,27 @@ export async function apiRequest(path, options = {}) {
     headers = {},
     timeoutMs,
     isFormData = false,
+    signal: externalSignal,
   } = options;
 
   const controller = new AbortController();
   const requestTimeout = timeoutMs ?? LONG_REQUEST_MS;
   const timer = setTimeout(() => controller.abort(), requestTimeout);
+
+  let stoppedByCaller = false;
+  let onExternalAbort;
+  if (externalSignal) {
+    if (externalSignal.aborted) {
+      stoppedByCaller = true;
+      controller.abort();
+    } else {
+      onExternalAbort = () => {
+        stoppedByCaller = true;
+        controller.abort();
+      };
+      externalSignal.addEventListener('abort', onExternalAbort);
+    }
+  }
 
   try {
     const fetchHeaders = { ...headers };
@@ -64,6 +80,14 @@ export async function apiRequest(path, options = {}) {
     return data;
   } catch (error) {
     if (error.name === 'AbortError') {
+      if (stoppedByCaller) {
+        throw {
+          message: 'Stopped.',
+          status: 499,
+          aborted: true,
+        };
+      }
+
       throw {
         message: 'Request timed out. Please try again.',
         status: 408,
@@ -81,6 +105,9 @@ export async function apiRequest(path, options = {}) {
     );
   } finally {
     clearTimeout(timer);
+    if (externalSignal && onExternalAbort) {
+      externalSignal.removeEventListener('abort', onExternalAbort);
+    }
   }
 }
 

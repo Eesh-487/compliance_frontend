@@ -107,6 +107,19 @@
   color: #ffffff;
 }
 
+.iconStopped {
+  background: var(--color-surface);
+  border: 2px solid var(--color-ink-muted);
+}
+
+.stoppedSquare {
+  background: var(--color-ink-muted);
+  border-radius: 2px;
+  display: block;
+  height: 10px;
+  width: 10px;
+}
+
 .label {
   color: var(--color-ink-secondary);
   font-size: var(--font-size-sm);
@@ -115,6 +128,10 @@
 
 .labelFailed {
   color: var(--color-critical);
+}
+
+.labelStopped {
+  color: var(--color-ink-muted);
 }
 
 .errorCaption {

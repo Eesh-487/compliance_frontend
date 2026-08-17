@@ -10,8 +10,17 @@ import styles from './LandingPage.module.css';
 
 function LandingPage() {
   const { orchestration, uploadDocument } = usePipelineRun();
-  const { steps, hasStarted, start, retryStep, continueAfterUpload, failedStep, isAwaitingUpload } =
-    orchestration;
+  const {
+    steps,
+    hasStarted,
+    start,
+    stop,
+    retryStep,
+    continueAfterUpload,
+    failedStep,
+    stoppedStep,
+    isAwaitingUpload,
+  } = orchestration;
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -69,6 +78,22 @@ function LandingPage() {
                   </div>
                 </Card>
               </motion.div>
+            ) : stoppedStep ? (
+              <motion.div
+                key="stopped"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+              >
+                <Card title={`${stoppedStep.label} stopped`}>
+                  <div className={styles.panelBody}>
+                    <p className={styles.hint}>You stopped this step before it finished.</p>
+                    <Button variant="primary" onClick={() => retryStep(stoppedStep.key)}>
+                      Resume this step
+                    </Button>
+                  </div>
+                </Card>
+              </motion.div>
             ) : isAwaitingUpload ? (
               <motion.div
                 key="upload"
@@ -105,10 +130,15 @@ function LandingPage() {
                 exit={{ opacity: 0 }}
               >
                 <Card>
-                  <p className={styles.hint}>
-                    Running {runningStep.label.toLowerCase()}. This can take several minutes for LLM-backed
-                    stages.
-                  </p>
+                  <div className={styles.panelBody}>
+                    <p className={styles.hint}>
+                      Running {runningStep.label.toLowerCase()}. This can take several minutes for
+                      LLM-backed stages.
+                    </p>
+                    <Button variant="danger" onClick={stop}>
+                      Stop
+                    </Button>
+                  </div>
                 </Card>
               </motion.div>
             ) : null}

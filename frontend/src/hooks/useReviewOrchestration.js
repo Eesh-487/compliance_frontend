@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { runGraphBuilder } from '../api/graphBuilder';
@@ -23,6 +23,7 @@ export function useReviewOrchestration() {
   const [hasStarted, setHasStarted] = useState(false);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const controllerRef = useRef(null);
 
   const setStepStatus = useCallback((key, status, error = null) => {
     setSteps((prev) => prev.map((step) => (step.key === key ? { ...step, status, error } : step)));
@@ -30,42 +31,64 @@ export function useReviewOrchestration() {
 
   const runGraphBuilderStep = useCallback(async () => {
     setStepStatus('graphBuilder', 'running');
+    const controller = new AbortController();
+    controllerRef.current = controller;
     try {
-      await runGraphBuilder();
+      await runGraphBuilder({ signal: controller.signal });
       setStepStatus('graphBuilder', 'done');
       return true;
     } catch (error) {
-      setStepStatus('graphBuilder', 'failed', error?.message || 'Graph Builder failed.');
+      setStepStatus(
+        'graphBuilder',
+        error?.aborted ? 'stopped' : 'failed',
+        error?.aborted ? null : error?.message || 'Graph Builder failed.',
+      );
       return false;
     }
   }, [setStepStatus]);
 
   const runLawIngestStep = useCallback(async () => {
     setStepStatus('lawIngest', 'running');
+    const controller = new AbortController();
+    controllerRef.current = controller;
     try {
-      await runLawIngest();
+      await runLawIngest({ signal: controller.signal });
       setStepStatus('lawIngest', 'done');
       setStepStatus('humanUpload', 'active');
       return true;
     } catch (error) {
-      setStepStatus('lawIngest', 'failed', error?.message || 'Law Ingest failed.');
+      setStepStatus(
+        'lawIngest',
+        error?.aborted ? 'stopped' : 'failed',
+        error?.aborted ? null : error?.message || 'Law Ingest failed.',
+      );
       return false;
     }
   }, [setStepStatus]);
 
   const runDraftStep = useCallback(async () => {
     setStepStatus('draft', 'running');
+    const controller = new AbortController();
+    controllerRef.current = controller;
     try {
-      const result = await draftRemediation();
+      const result = await draftRemediation({ signal: controller.signal });
       setStepStatus('draft', 'done');
       queryClient.setQueryData(SUGGESTIONS_KEY, result);
       navigate('/review/suggestions');
       return true;
     } catch (error) {
-      setStepStatus('draft', 'failed', error?.message || 'Draft Remediation failed.');
+      setStepStatus(
+        'draft',
+        error?.aborted ? 'stopped' : 'failed',
+        error?.aborted ? null : error?.message || 'Draft Remediation failed.',
+      );
       return false;
     }
   }, [setStepStatus, queryClient, navigate]);
+
+  const stop = useCallback(() => {
+    controllerRef.current?.abort();
+  }, []);
 
   const start = useCallback(async () => {
     setHasStarted(true);
@@ -106,6 +129,7 @@ export function useReviewOrchestration() {
   }, [setStepStatus, runDraftStep]);
 
   const failedStep = steps.find((step) => step.status === 'failed');
+  const stoppedStep = steps.find((step) => step.status === 'stopped');
   const isAwaitingUpload = steps.find((step) => step.key === 'humanUpload')?.status === 'active';
   const isRunning = steps.some((step) => step.status === 'running');
   const isComplete = steps.every((step) => step.status === 'done');
@@ -114,9 +138,11 @@ export function useReviewOrchestration() {
     steps,
     hasStarted,
     start,
+    stop,
     retryStep,
     continueAfterUpload,
     failedStep,
+    stoppedStep,
     isAwaitingUpload,
     isRunning,
     isComplete,

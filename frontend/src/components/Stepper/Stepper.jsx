@@ -30,6 +30,14 @@ function StepIcon({ status, index }) {
     );
   }
 
+  if (status === 'stopped') {
+    return (
+      <span className={`${styles.icon} ${styles.iconStopped}`}>
+        <span className={styles.stoppedSquare} />
+      </span>
+    );
+  }
+
   if (status === 'running') {
     return (
       <span className={`${styles.icon} ${styles.iconRunning}`}>
@@ -70,7 +78,11 @@ function Stepper({ steps }) {
           ) : null}
 
           <StepIcon status={step.status} index={index} />
-          <span className={`${styles.label} ${step.status === 'failed' ? styles.labelFailed : ''}`}>
+          <span
+            className={`${styles.label} ${step.status === 'failed' ? styles.labelFailed : ''} ${
+              step.status === 'stopped' ? styles.labelStopped : ''
+            }`}
+          >
             {step.label}
           </span>
           {step.status === 'failed' && step.error ? (
@@ -87,7 +99,7 @@ Stepper.propTypes = {
     PropTypes.shape({
       key: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-      status: PropTypes.oneOf(['pending', 'running', 'active', 'done', 'failed']).isRequired,
+      status: PropTypes.oneOf(['pending', 'running', 'active', 'done', 'failed', 'stopped']).isRequired,
       error: PropTypes.string,
     }),
   ).isRequired,

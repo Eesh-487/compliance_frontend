@@ -1,9 +1,10 @@
 import { apiRequest, LONG_REQUEST_MS } from './client';
 
-export function draftRemediation() {
+export function draftRemediation({ signal } = {}) {
   return apiRequest('/remediation/draft', {
     method: 'POST',
     timeoutMs: LONG_REQUEST_MS,
+    signal,
   });
 }
 

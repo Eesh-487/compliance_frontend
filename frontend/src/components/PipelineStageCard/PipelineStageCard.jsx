@@ -38,7 +38,11 @@ function PipelineStageCard({ title, description, mutation, buttonText }) {
           ) : null}
 
           {mutation.isError ? (
-            <p className={styles.errorText}>{mutation.error?.message || 'Request failed.'}</p>
+            <p className={mutation.error?.aborted ? styles.stoppedText : styles.errorText}>
+              {mutation.error?.aborted
+                ? 'Stopped before it finished.'
+                : mutation.error?.message || 'Request failed.'}
+            </p>
           ) : null}
 
           {mutation.isSuccess && summary.length > 0 ? (
@@ -52,9 +56,17 @@ function PipelineStageCard({ title, description, mutation, buttonText }) {
             </ul>
           ) : null}
 
-          <Button variant="primary" isLoading={mutation.isPending} onClick={() => mutation.mutate()}>
-            {buttonText}
-          </Button>
+          <div className={styles.buttonRow}>
+            <Button variant="primary" isLoading={mutation.isPending} onClick={() => mutation.mutate()}>
+              {buttonText}
+            </Button>
+
+            {mutation.isPending ? (
+              <Button variant="danger" onClick={mutation.stop}>
+                Stop
+              </Button>
+            ) : null}
+          </div>
         </div>
       </Card>
     </motion.div>
@@ -72,6 +84,7 @@ PipelineStageCard.propTypes = {
     isError: PropTypes.bool,
     isSuccess: PropTypes.bool,
     mutate: PropTypes.func.isRequired,
+    stop: PropTypes.func.isRequired,
   }).isRequired,
   buttonText: PropTypes.string.isRequired,
 };
