@@ -76,7 +76,7 @@ export function useReviewOrchestration() {
     try {
       const result = await runJobToCompletion(draftRemediation, { onJobId: trackJobId });
       setStepStatus('draft', 'done');
-      queryClient.setQueryData(SUGGESTIONS_KEY, result);
+      queryClient.setQueryData(SUGGESTIONS_KEY, result.suggestions);
       navigate('/review/suggestions');
       return true;
     } catch (error) {
