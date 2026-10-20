@@ -18,6 +18,54 @@
   max-width: 560px;
 }
 
+.preview {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.previewStep {
+  align-items: center;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-lg);
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.previewIndex {
+  align-items: center;
+  background: var(--color-surface);
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), inset 0 0 0 1px var(--color-border);
+  color: var(--color-ink);
+  display: flex;
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+
+.previewLabel {
+  color: var(--color-ink);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+@media (min-width: 900px) {
+  .preview {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 .flow {
   display: flex;
   flex-direction: column;
@@ -50,7 +98,6 @@
 
 .uploadedList li {
   background: var(--color-surface-sunken);
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text-primary);
   font-size: var(--font-size-sm);

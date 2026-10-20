@@ -57,12 +57,16 @@ function SuggestionsPage() {
         </Card>
       ) : null}
 
+      {/*
+        animate, not whileInView - see HistoryPage: the container renders before
+        the data arrives, so a scroll trigger fires on an empty list and the
+        cards that mount afterwards never animate in.
+      */}
       <motion.div
         className={styles.list}
         variants={scrollStagger}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
+        animate="visible"
       >
         {suggestions.map((suggestion) => (
           <motion.div key={suggestion.id} layout variants={scrollReveal}>

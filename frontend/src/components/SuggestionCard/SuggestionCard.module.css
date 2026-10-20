@@ -45,7 +45,7 @@
 
 .sectionTitle {
   margin: 0;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
 
@@ -57,7 +57,6 @@
 }
 
 .removeText {
-  border: 1px solid rgba(179, 38, 30, 0.14);
   background-color: var(--color-diff-remove-bg);
   color: var(--color-diff-remove-text);
   text-decoration: line-through;
@@ -66,12 +65,10 @@
 
 .neutralText {
   background: var(--color-surface-sunken);
-  border: 1px solid var(--color-border);
   color: var(--color-text-secondary);
 }
 
 .addText {
-  border: 1px solid rgba(47, 104, 68, 0.16);
   background-color: var(--color-diff-add-bg);
   color: var(--color-diff-add-text);
 }

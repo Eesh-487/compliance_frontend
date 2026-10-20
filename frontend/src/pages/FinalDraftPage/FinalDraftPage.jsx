@@ -84,7 +84,7 @@ function FinalDraftPage() {
               mono
             />
 
-            <div className={styles.actions}>
+            <div className={`glass ${styles.actions}`} role="toolbar" aria-label="Draft actions">
               <Button type="submit" variant="secondary" isLoading={saveStatus === 'pending'}>
                 Save Edits
               </Button>

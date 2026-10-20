@@ -6,6 +6,7 @@ import DocumentDropzone from '../../components/DocumentDropzone/DocumentDropzone
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Stepper from '../../components/Stepper/Stepper';
 import { usePipelineRun } from '../../hooks/usePipelineRun';
+import { fadeUp, staggerContainer } from '../../lib/motion';
 import styles from './LandingPage.module.css';
 
 function LandingPage() {
@@ -47,6 +48,19 @@ function LandingPage() {
                 gives you a chance to add supporting documents, then drafts a reviewable suggestion for
                 every gap found — landing you directly in the review queue.
               </p>
+              <motion.ol
+                className={styles.preview}
+                variants={staggerContainer}
+                initial="hidden"
+                animate="visible"
+              >
+                {steps.map((step, index) => (
+                  <motion.li key={step.key} className={styles.previewStep} variants={fadeUp}>
+                    <span className={styles.previewIndex}>{index + 1}</span>
+                    <span className={styles.previewLabel}>{step.label}</span>
+                  </motion.li>
+                ))}
+              </motion.ol>
               <Button size="lg" onClick={start}>
                 Start Compliance Review
               </Button>

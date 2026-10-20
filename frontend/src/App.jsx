@@ -11,6 +11,7 @@ import GapAnalysisPage from './pages/GapAnalysisPage/GapAnalysisPage';
 import SuggestionsPage from './pages/SuggestionsPage/SuggestionsPage';
 import FinalDraftPage from './pages/FinalDraftPage/FinalDraftPage';
 import HistoryPage from './pages/HistoryPage/HistoryPage';
+import SettingsPage from './pages/SettingsPage/SettingsPage';
 
 const GraphExplorerPage = lazy(() => import('./pages/GraphExplorerPage/GraphExplorerPage'));
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/review/suggestions" element={<SuggestionsPage />} />
           <Route path="/review/final-draft" element={<FinalDraftPage />} />
           <Route path="/review/history" element={<HistoryPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

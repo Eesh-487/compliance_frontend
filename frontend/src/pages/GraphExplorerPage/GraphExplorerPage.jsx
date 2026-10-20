@@ -6,7 +6,8 @@ import Card from '../../components/Card/Card';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Spinner from '../../components/Spinner/Spinner';
 import { useGraph } from '../../hooks/useGraph';
-import { EASE_OUT } from '../../lib/motion';
+import { SPRING_GLASS } from '../../lib/motion';
+import { useResolvedTheme } from '../../lib/theme';
 import styles from './GraphExplorerPage.module.css';
 
 // Fixed categorical 8-hue set (see tokens.css). A force-directed layout can
@@ -26,21 +27,26 @@ const NODE_TYPES = [
   { type: 'Process', token: '--color-node-process' },
 ];
 
-const FALLBACK_NODE_COLOR = '#8a8778';
+const FALLBACK_NODE_COLOR = '#8e8e93';
 const EDGE_LABEL_ZOOM_THRESHOLD = 1.4;
 
 function useResolvedNodeColors() {
+  const theme = useResolvedTheme();
   return useMemo(() => {
     if (typeof window === 'undefined') {
       return {};
     }
     const computed = getComputedStyle(document.documentElement);
-    const map = {};
+    const map = { theme };
     NODE_TYPES.forEach(({ type, token }) => {
       map[type] = computed.getPropertyValue(token).trim() || FALLBACK_NODE_COLOR;
     });
+    // Canvas can't read CSS vars, so resolve the appearance-dependent ones too.
+    map.ink = computed.getPropertyValue('--color-ink').trim();
+    map.muted = computed.getPropertyValue('--color-ink-muted').trim();
+    map.link = computed.getPropertyValue('--color-graph-link').trim();
     return map;
-  }, []);
+  }, [theme]);
 }
 
 function useContainerSize() {
@@ -148,7 +154,7 @@ function GraphExplorerPage() {
                 width={size.width}
                 height={size.height}
                 backgroundColor="rgba(0,0,0,0)"
-                linkColor={() => 'rgba(82, 82, 91, 0.35)'}
+                linkColor={() => nodeColors.link}
                 linkWidth={1}
                 onNodeClick={(node) => {
                   const entity = entityById.get(node.id);
@@ -167,15 +173,15 @@ function GraphExplorerPage() {
 
                   if (selectedEntity?.id === node.id) {
                     ctx.lineWidth = 1.5 / globalScale;
-                    ctx.strokeStyle = '#14161a';
+                    ctx.strokeStyle = nodeColors.ink;
                     ctx.stroke();
                   }
 
                   const fontSize = 12 / globalScale;
-                  ctx.font = `${fontSize}px Inter, sans-serif`;
+                  ctx.font = `${fontSize}px -apple-system, Inter, sans-serif`;
                   ctx.textAlign = 'center';
                   ctx.textBaseline = 'top';
-                  ctx.fillStyle = '#14161a';
+                  ctx.fillStyle = nodeColors.ink;
                   ctx.fillText(node.label, node.x, node.y + radius + 2);
                 }}
                 nodePointerAreaPaint={(node, color, ctx) => {
@@ -198,16 +204,16 @@ function GraphExplorerPage() {
                   const midX = (start.x + end.x) / 2;
                   const midY = (start.y + end.y) / 2;
 
-                  ctx.font = '3.5px Inter, sans-serif';
+                  ctx.font = '3.5px -apple-system, Inter, sans-serif';
                   ctx.textAlign = 'center';
                   ctx.textBaseline = 'middle';
-                  ctx.fillStyle = '#8a8778';
+                  ctx.fillStyle = nodeColors.muted;
                   ctx.fillText(link.type || '', midX, midY);
                 }}
               />
             ) : null}
 
-            <div className={styles.legend}>
+            <div className={`glass ${styles.legend}`}>
               {NODE_TYPES.map(({ type, token }) => (
                 <div key={type} className={styles.legendItem}>
                   <span className={styles.legendSwatch} style={{ background: `var(${token})` }} />
@@ -221,10 +227,10 @@ function GraphExplorerPage() {
             {selectedEntity ? (
               <motion.div
                 className={styles.panelWrap}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 16 }}
-                transition={{ duration: 0.25, ease: EASE_OUT }}
+                initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 24, scale: 0.96 }}
+                transition={SPRING_GLASS}
               >
                 <Card
                   title={selectedEntity.name}

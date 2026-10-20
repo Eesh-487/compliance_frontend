@@ -35,10 +35,17 @@
   gap: var(--space-3);
 }
 
+/* Floating glass toolbar: stays reachable while scrolling the long draft */
 .actions {
+  align-self: flex-end;
+  border-radius: var(--radius-pill);
+  bottom: var(--space-4);
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+  padding: 6px;
+  position: sticky;
+  z-index: 5;
 }
 
 .form :global(textarea) {
@@ -59,7 +66,6 @@
 
 .finalizeSummary {
   background: var(--color-accent-soft);
-  border: 1px solid rgba(30, 42, 74, 0.14);
   border-radius: var(--radius-md);
   display: grid;
   gap: var(--space-2);

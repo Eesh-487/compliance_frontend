@@ -9,6 +9,16 @@
       content="Review AI-drafted policy remediations against compliance gaps, and manage the finalized policy record."
     />
     <title>Policy Remediation Console</title>
+    <script>
+      // Resolve the theme before first paint (mirrors src/lib/theme.js) to avoid a flash.
+      try {
+        var t = localStorage.getItem('theme');
+        if (t !== 'light' && t !== 'dark') {
+          t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

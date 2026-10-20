@@ -1,52 +1,77 @@
+/*
+ * Apple-style semantic tokens. Light values are the default; dark values
+ * follow the system appearance (no in-app toggle, per HIG dark-mode.md).
+ * Contrast figures are against --color-surface unless noted.
+ */
 :root {
-  /* Canvas & surfaces */
-  --color-canvas: #fafaf8;
+  /* Canvas & surfaces (systemGroupedBackground / secondarySystemGroupedBackground) */
+  --color-canvas: #f5f5f7;
   --color-surface: #ffffff;
-  --color-surface-sunken: #f4f3ef;
+  --color-surface-sunken: #f5f5f7;
+  --color-material: rgba(246, 246, 248, 0.78);
 
-  /* Borders */
-  --color-border: #e5e3dd;
-  --color-border-strong: #d4d1c7;
+  /* Liquid Glass (regular variant) — functional layer only: bars, sidebar,
+     floating toolbars, sheets. Never cards or content. */
+  --glass-fill: rgba(255, 255, 255, 0.62);
+  --glass-blur: blur(24px) saturate(1.5);
+  --glass-edge: rgba(255, 255, 255, 0.7);
+  --glass-sheen: rgba(255, 255, 255, 0.35);
+  --glass-rim: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --radius-glass: 22px;
 
-  /* Text */
-  --color-ink: #14161a;
-  --color-ink-secondary: #52525b;
-  --color-ink-muted: #8a8778;
+  /* Brand tint lives in the content layer so the glass has color to pick up */
+  --color-canvas-wash: radial-gradient(ellipse 55% 50% at 0% 0%, rgba(0, 113, 227, 0.16), transparent 70%),
+    radial-gradient(ellipse 45% 45% at 100% 0%, rgba(175, 82, 222, 0.12), transparent 70%),
+    radial-gradient(ellipse 50% 45% at 100% 100%, rgba(48, 176, 199, 0.1), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 0% 100%, rgba(255, 149, 0, 0.07), transparent 70%);
 
-  /* Accent */
-  --color-accent: #1e2a4a;
-  --color-accent-hover: #2a3b63;
-  --color-accent-soft: #eef1f6;
+  /* Separators */
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.18);
 
-  /* Back-compat aliases used by a few older references */
+  /* Labels */
+  --color-ink: #1d1d1f; /* 16.8:1 */
+  --color-ink-secondary: #48484a; /* 9.0:1 */
+  --color-ink-muted: #6e6e73; /* 5.0:1 */
+
+  /* Accent: one color, one meaning — interactive */
+  --color-accent: #0066cc; /* 5.6:1; white on it 5.6:1 */
+  --color-accent-hover: #0058b0;
+  --color-accent-soft: rgba(0, 102, 204, 0.1);
+  --color-on-accent: #ffffff;
+  --color-focus-ring: rgba(0, 102, 204, 0.4);
+
+  /* Back-compat aliases */
   --color-text-primary: var(--color-ink);
   --color-text-secondary: var(--color-ink-secondary);
   --color-text-muted: var(--color-ink-muted);
   --color-bg: var(--color-canvas);
 
-  /* Severity */
-  --color-critical: #b3261e;
-  --color-critical-bg: #fbeae9;
-  --color-high: #b4530a;
-  --color-high-bg: #fbf0e4;
-  --color-medium: #92660c;
-  --color-medium-bg: #faf3e2;
-  --color-low: var(--color-accent);
-  --color-low-bg: var(--color-accent-soft);
+  /* Severity (accessible system red / orange / yellow; low stays neutral so
+     blue keeps meaning "interactive") */
+  --color-critical: #d70015; /* 5.0:1 */
+  --color-critical-bg: rgba(215, 0, 21, 0.1);
+  --color-high: #b93d00; /* 5.4:1 */
+  --color-high-bg: rgba(201, 52, 0, 0.1);
+  --color-medium: #8a5a00; /* 5.6:1 */
+  --color-medium-bg: rgba(178, 120, 0, 0.12);
+  --color-low: var(--color-ink-secondary);
+  --color-low-bg: rgba(120, 120, 128, 0.12);
 
   /* Status */
-  --color-success: #2f6844;
-  --color-success-bg: #ebf3ed;
-  --color-danger: #b3261e;
-  --color-danger-bg: #fbeae9;
-  --color-pending: #92660c;
-  --color-pending-bg: #faf3e2;
+  --color-success: #1e7a35; /* 5.4:1 */
+  --color-success-bg: rgba(36, 138, 61, 0.1);
+  --color-danger: var(--color-critical);
+  --color-danger-bg: var(--color-critical-bg);
+  --color-pending: var(--color-medium);
+  --color-pending-bg: var(--color-medium-bg);
 
   /* Diff */
-  --color-diff-add-bg: #e7f0e9;
-  --color-diff-add-text: #2f6844;
-  --color-diff-remove-bg: #fbeae9;
-  --color-diff-remove-text: #b3261e;
+  --color-diff-add-bg: rgba(36, 138, 61, 0.1);
+  --color-diff-add-text: var(--color-success);
+  --color-diff-remove-bg: rgba(215, 0, 21, 0.08);
+  --color-diff-remove-text: var(--color-critical);
 
   /* Graph Explorer node types (validated categorical 8-hue set; see
      GraphExplorerPage for the palette/legend contract) */
@@ -58,8 +83,9 @@
   --color-node-department: #eb6834;
   --color-node-risk: #e34948;
   --color-node-process: #e87ba4;
+  --color-graph-link: rgba(60, 60, 67, 0.3);
 
-  /* Spacing (unchanged 4px scale) */
+  /* Spacing (4px scale) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -68,41 +94,105 @@
   --space-8: 32px;
   --space-12: 48px;
 
-  /* Type */
-  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  /* Type: system font first (SF Pro on Apple platforms), Inter elsewhere */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Segoe UI', Roboto,
+    'Helvetica Neue', sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto,
+    'Helvetica Neue', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
 
-  --font-size-xs: 0.8125rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 0.9375rem;
-  --font-size-lg: 1.0625rem;
-  --font-size-xl: 1.375rem;
-  --font-size-2xl: 1.875rem;
-  --font-size-display: 2.75rem;
+  --font-size-xs: 0.75rem; /* 12 — caption */
+  --font-size-sm: 0.8125rem; /* 13 — footnote */
+  --font-size-base: 0.9375rem; /* 15 — body */
+  --font-size-lg: 1.0625rem; /* 17 — headline */
+  --font-size-xl: 1.375rem; /* 22 — title 2 */
+  --font-size-2xl: 1.75rem; /* 28 — title 1 */
+  --font-size-display: 2.125rem; /* 34 — large title */
 
-  --tracking-wide: 0.06em;
+  --tracking-tight: -0.022em;
+  --tracking-wide: 0.02em;
 
   /* Radius & shadow */
-  --radius-md: 6px;
-  --radius-lg: 10px;
-  --shadow-xs: 0 1px 2px rgba(20, 22, 26, 0.04);
-  --shadow-sm: 0 2px 8px rgba(20, 22, 26, 0.06);
-  --shadow-md: 0 8px 24px rgba(20, 22, 26, 0.08);
-  --shadow-lg: 0 24px 60px rgba(20, 22, 26, 0.16);
-  --shadow-glow: 0 0 0 1px rgba(30, 42, 74, 0.06), 0 20px 40px -12px rgba(30, 42, 74, 0.35);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 980px;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.14);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px -16px rgba(0, 0, 0, 0.14);
+  --color-card-edge: rgba(255, 255, 255, 0.9);
 
-  /* Motion */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Motion: brief and quiet */
+  --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
   --duration-fast: 150ms;
-  --duration-base: 250ms;
-  --duration-slow: 400ms;
-  --duration-slower: 650ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
-@media (min-width: 768px) {
-  :root {
-    --font-size-display: 3.5rem;
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #000000;
+  --color-surface: #1c1c1e;
+  --color-surface-sunken: #2c2c2e;
+  --color-material: rgba(28, 28, 30, 0.72);
+
+  --glass-fill: rgba(40, 40, 44, 0.55);
+  --glass-edge: rgba(255, 255, 255, 0.14);
+  --glass-sheen: rgba(255, 255, 255, 0.06);
+  --glass-rim: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
+  --color-canvas-wash: radial-gradient(ellipse 55% 50% at 0% 0%, rgba(10, 132, 255, 0.2), transparent 70%),
+    radial-gradient(ellipse 45% 45% at 100% 0%, rgba(191, 90, 242, 0.14), transparent 70%),
+    radial-gradient(ellipse 50% 45% at 100% 100%, rgba(64, 200, 224, 0.1), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 0% 100%, rgba(255, 159, 10, 0.06), transparent 70%);
+
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.22);
+
+  --color-ink: #f5f5f7; /* 15.6:1 on #1c1c1e */
+  --color-ink-secondary: #c7c7cc; /* 10.6:1 */
+  --color-ink-muted: #98989d; /* 6.1:1 */
+
+  --color-accent: #0a84ff; /* 4.9:1 on #1c1c1e */
+  --color-accent-hover: #409cff;
+  --color-accent-soft: rgba(10, 132, 255, 0.18);
+  --color-on-accent: #ffffff;
+  --color-focus-ring: rgba(10, 132, 255, 0.5);
+
+  --color-critical: #ff6961;
+  --color-critical-bg: rgba(255, 69, 58, 0.16);
+  --color-high: #ffb340;
+  --color-high-bg: rgba(255, 159, 10, 0.16);
+  --color-medium: #ffd60a;
+  --color-medium-bg: rgba(255, 214, 10, 0.14);
+  --color-low-bg: rgba(120, 120, 128, 0.24);
+
+  --color-success: #30d158;
+  --color-success-bg: rgba(48, 209, 88, 0.14);
+
+  --color-diff-add-bg: rgba(48, 209, 88, 0.12);
+  --color-diff-remove-bg: rgba(255, 69, 58, 0.12);
+
+  --color-graph-link: rgba(235, 235, 245, 0.25);
+
+  --shadow-xs: 0 0 0 transparent;
+  --shadow-sm: 0 0 0 transparent;
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --shadow-card: 0 12px 32px -16px rgba(0, 0, 0, 0.8);
+  --color-card-edge: rgba(255, 255, 255, 0.06);
+}
+
+@media (prefers-contrast: more) {
+  :root,
+  :root[data-theme='dark'] {
+    --color-border: var(--color-ink-muted);
+    --color-border-strong: var(--color-ink-secondary);
+    --color-ink-muted: var(--color-ink-secondary);
+    --glass-fill: var(--color-surface);
+    --glass-rim: var(--color-ink-muted);
   }
 }

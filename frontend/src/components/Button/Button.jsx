@@ -1,7 +1,13 @@
-import { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { motion, useMotionValue, useSpring } from 'motion/react';
 import styles from './Button.module.css';
+
+// Liquid Glass buttons light up where the pointer is; set the position as CSS
+// vars so no re-render happens on move.
+function trackLight(event) {
+  const rect = event.currentTarget.getBoundingClientRect();
+  event.currentTarget.style.setProperty('--light-x', `${event.clientX - rect.left}px`);
+  event.currentTarget.style.setProperty('--light-y', `${event.clientY - rect.top}px`);
+}
 
 function Button({
   children,
@@ -12,44 +18,20 @@ function Button({
   disabled = false,
   onClick,
 }) {
-  const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 300, damping: 20, mass: 0.5 });
-  const springY = useSpring(y, { stiffness: 300, damping: 20, mass: 0.5 });
-
   const classNames = [styles.button, styles[variant], styles[size]].filter(Boolean).join(' ');
 
-  const isDisabled = disabled || isLoading;
-
-  const handleMouseMove = (event) => {
-    if (isDisabled || !ref.current) {
-      return;
-    }
-    const rect = ref.current.getBoundingClientRect();
-    x.set((event.clientX - (rect.left + rect.width / 2)) * 0.25);
-    y.set((event.clientY - (rect.top + rect.height / 2)) * 0.35);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   return (
-    <motion.button
-      ref={ref}
+    <button
       type={type}
       className={classNames}
-      disabled={isDisabled}
+      disabled={disabled || isLoading}
+      aria-busy={isLoading || undefined}
       onClick={onClick}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ translateX: springX, translateY: springY }}
-      whileTap={isDisabled ? undefined : { scale: 0.96 }}
+      onPointerMove={trackLight}
     >
-      {isLoading ? 'Working...' : children}
-    </motion.button>
+      {isLoading ? <span className={styles.spinner} aria-hidden="true" /> : null}
+      <span className={styles.label}>{isLoading ? 'Working…' : children}</span>
+    </button>
   );
 }
 

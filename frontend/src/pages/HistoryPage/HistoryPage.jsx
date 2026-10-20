@@ -20,6 +20,23 @@ function HistoryPage() {
 
   const historyItems = data || [];
 
+  // git's canonical empty-tree hash. The oldest commit has no parent, so this
+  // is what it gets diffed against - `git diff <empty-tree> <commit>` renders
+  // the whole file as added, which is exactly what "what did this commit
+  // introduce" means for an initial commit.
+  const EMPTY_TREE = '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
+
+  // The list is newest-first, so a commit's predecessor is the NEXT index.
+  // Selecting one commit has to set both ends of the range: setting only
+  // `fromRev` left `toRev` at its 'HEAD' default, so clicking the newest
+  // commit diffed HEAD against HEAD and always came back empty.
+  const selectCommit = (index) => {
+    const item = historyItems[index];
+    const parent = historyItems[index + 1];
+    setFromRev(parent ? parent.commit : EMPTY_TREE);
+    setToRev(item.commit);
+  };
+
   const diffLines = useMemo(() => {
     const text = diffMutation.data?.diff || '';
     return text ? text.split('\n') : [];
@@ -51,19 +68,25 @@ function HistoryPage() {
             <p className={styles.empty}>No finalized remediation commits yet.</p>
           ) : null}
 
+          {/*
+            animate, not whileInView: this list is empty on first render while
+            the query is in flight, so a scroll-triggered reveal fires on an
+            empty container, `once: true` unsubscribes, and the rows that mount
+            afterwards stay stuck at opacity 0 until the page is remounted.
+          */}
           <motion.ul
             className={styles.historyList}
             variants={scrollStagger}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
+            animate="visible"
           >
-            {historyItems.map((item) => (
+            {historyItems.map((item, index) => (
               <motion.li key={item.commit} layout variants={scrollReveal}>
                 <button
                   type="button"
                   className={styles.commitButton}
-                  onClick={() => setFromRev(item.commit)}
+                  aria-pressed={toRev === item.commit}
+                  onClick={() => selectCommit(index)}
                 >
                   <span className={styles.commitHash}>{item.commit?.slice(0, 8)}</span>
                   <span className={styles.commitDate}>{item.date}</span>
@@ -102,7 +125,11 @@ function HistoryPage() {
           ) : null}
 
           {diffMutation.isSuccess && diffLines.length === 0 ? (
-            <p className={styles.empty}>No diff output for selected revisions.</p>
+            <p className={styles.empty}>
+              {fromRev === toRev
+                ? 'From and To are the same revision - pick two different commits to compare.'
+                : 'These two revisions are identical: this commit recorded a review cycle without changing the policy text.'}
+            </p>
           ) : null}
 
           {diffLines.length > 0 ? (

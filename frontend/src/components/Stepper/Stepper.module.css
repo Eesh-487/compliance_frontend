@@ -74,7 +74,7 @@
 
 .spinnerRing {
   animation: stepper-spin 0.9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-  border: 2px solid rgba(30, 42, 74, 0.2);
+  border: 2px solid var(--color-accent-soft);
   border-radius: 50%;
   border-top-color: var(--color-accent);
   display: block;
@@ -98,13 +98,13 @@
 .iconDone {
   background: var(--color-accent);
   border: 2px solid var(--color-accent);
-  color: #ffffff;
+  color: var(--color-on-accent);
 }
 
 .iconFailed {
   background: var(--color-critical);
   border: 2px solid var(--color-critical);
-  color: #ffffff;
+  color: var(--color-surface);
 }
 
 .iconStopped {
@@ -123,7 +123,7 @@
 .label {
   color: var(--color-ink-secondary);
   font-size: var(--font-size-sm);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .labelFailed {
