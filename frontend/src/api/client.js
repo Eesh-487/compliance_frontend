@@ -1,4 +1,8 @@
-const API_BASE_URL = 'http://127.0.0.1:8000';
+// VITE_API_BASE_URL (set in Vercel or a local .env) overrides both defaults:
+// the local backend during `npm run dev`, the Tailscale Funnel URL in builds.
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.DEV ? 'http://127.0.0.1:8000' : 'https://eesh.tail793a05.ts.net');
 
 const LONG_REQUEST_MS = 10 * 60 * 1000;
 
