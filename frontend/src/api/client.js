@@ -1,8 +1,9 @@
 // VITE_API_BASE_URL (set in Vercel or a local .env) overrides both defaults:
-// the local backend during `npm run dev`, the Tailscale Funnel URL in builds.
+// the local backend during `npm run dev`, the Cloudflare quick tunnel to the
+// phone-hosted backend in builds (the tunnel URL changes on every restart).
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  (import.meta.env.DEV ? 'http://127.0.0.1:8000' : 'https://eesh.tail793a05.ts.net');
+  (import.meta.env.DEV ? 'http://127.0.0.1:8000' : 'https://built-organized-fires-consulting.trycloudflare.com');
 
 const LONG_REQUEST_MS = 10 * 60 * 1000;
 
