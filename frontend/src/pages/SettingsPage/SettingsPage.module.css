@@ -39,6 +39,13 @@
   width: 100%;
 }
 
+.hint {
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  overflow-wrap: anywhere;
+}
+
 .input:focus {
   border-color: var(--color-accent);
   outline: 3px solid var(--color-focus-ring);
